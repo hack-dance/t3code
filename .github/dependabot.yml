@@ -8,3 +8,16 @@ updates:
     # security updates there are not resolvable and are not ours to bump.
     exclude-paths:
       - ".repos/**"
+
+  # exclude-paths only applies to version updates. Security updates look up
+  # the config block whose directory matches the vulnerable manifest, and they
+  # honour `ignore`, so this block opts every vendored checkout under .repos/
+  # out of both kinds of update (HACK-1394).
+  - package-ecosystem: "npm"
+    directories:
+      - "/.repos/**"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "*"
